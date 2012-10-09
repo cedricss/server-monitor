@@ -1,5 +1,19 @@
 import stdlib.themes.bootstrap.{css, icons, responsive}
 
+module Job {
+
+    exposed @async function check(name, url, uri) {
+        match (WebClient.Get.try_get(uri)) {
+        case { failure : { timeout } } : Action.down(name, url, "socket timeout", { timeout })
+        case { failure : { network } } : Action.down(name, url, "impossible to reach the server", { unreachable })
+        case { failure : { uri : _, reason : _ } } : Action.down(name, url, "Invalid url. Missing http:// prefix?", { unknown_error })
+        case { failure : f }           : Action.down(name, url, "other reason: {f}", { unknown_error })
+        case { success : _ }           : Action.up(url)
+        }
+    }
+
+}
+
 client module Action {
 
     function msg(url, class, msg) {
@@ -10,7 +24,15 @@ client module Action {
                  </div>
     }
 
+    function up(url) { msg(url, "label-success", "is UP") }
+    function invalid(url) { msg("ERROR: {url}", "label-inverse", "an invalid url") }
+    function down(name, url, failure, status) { msg(url, "label-important", "is DOWN ({failure})"); }
+    function test(name, url, status) { msg("", "label-inverse", "You should see a Dropbox popup on your desktop"); }
+    function error_test(_) { test(Dom.get_value(#name), Dom.get_value(#url), { error_simulation }) }
+
     function add_job(name, url, uri, freq) {
+        timer = Scheduler.make_timer(freq*1000, function() { Job.check(name, url, uri) });
+        Job.check(name, url, uri); timer.start();
         // Add a new line on top of the job list
         #jobs += <tr id=#{name}>
                     <td>{url} each {freq} sec</td>
