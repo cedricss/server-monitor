@@ -5,7 +5,7 @@ type log = { string url, status status, Date.date date }
 type job = { string url, int freq }
 
 // Define two collections in the "monitor" database
-database monitor {
+database monitor @dropbox {
     stringmap(log) /logs
     stringmap(job) /jobs
     /logs[_]/status = { ok } // Define for example the default "status" value
@@ -36,8 +36,7 @@ module Job {
 
 client module Action {
 
-    function msg(url, class, msg) {
-        // Add a log on top of the logs list
+    function msg(url, class, msg) { // Add a log on top of the logs list
         #info += <div>
                     <span class="label">{Date.to_string_time_only(Date.now())}</span>
                     <span class="label {class}">{url} {msg}</span>
@@ -71,7 +70,7 @@ client module Action {
               and stop_btn = <a class="btn-mini" onclick={stop}><i class="icon-pause"></i></a>
               and start_btn = <a class="btn-mini" onclick={start}><i class="icon-play"></i></a>
 
-        // Add a new line on top of the job list
+        // Add a new line on top of the job list:
         #jobs += <tr id=#{name}>
                     <td>{url} each {freq} sec</td>
                     <td><span id=#{player_id}>{stop_btn}</span>{edit_btn}{remove_btn}</td>
@@ -99,15 +98,19 @@ client module Action {
         }
     }
 
-    @async function load_all(_) {
+    server @async function load_all(_) {
+        Dom.set_style(#progress, css { width: 100% }) // Animate the progress bar changing its width style
+        jobs = Job.get_all()
+        Dom.hide(#loading);
         Map.iter(
             { function(name, job)
                 Option.switch(Action.add_job(name, job.url, _, job.freq), void, Uri.of_string(job.url))
-            }, Job.get_all()
+            }, jobs
         )
     }
 
 }
+
 module View {
 
     function page() {
@@ -124,7 +127,7 @@ module View {
                 <label>Frequency</label><input class="input-mini" type="text" id=#freq value="3"/><span class="help-inline">sec</span>
                 </div>
                 <a class="btn btn-primary" onclick={Action.submit_job}><i class="icon-plus icon-white"/> Add and run</a>
-                <a class="btn btn-small btn-inverse"><i class="icon-fire icon-white"/> Simulate a failure</a>
+                <a class="btn btn-small btn-inverse" onclick={Action.error_test}><i class="icon-fire icon-white"/> Simulate a failure</a>
             </form>
         </div>
         <div class="span6">
@@ -142,9 +145,38 @@ module View {
     }
 }
 
+module Controller {
+
+    DropboxUser = DbDropbox.User(monitor)
+
+    private function access_page(raw_token) {
+        match (DropboxUser.get_access(raw_token)) {
+        case { success } -> Resource.default_redirection_page("/")
+        case { failure : error } -> Resource.html("Error", <>{error}</>)
+        }
+    }
+
+    private function login_page() {
+        redirect = "http://localhost:8080/dropbox/connect"
+        if (DropboxUser.is_authenticated()) {
+          Resource.page("Server monitor", View.page())
+        }else{
+          match (DropboxUser.get_login_url(redirect)) {
+          case { success : url } -> Resource.default_redirection_page(url)
+          case { failure : error } -> Resource.html("Error", <>{error}</>)
+          }
+        }
+    }
+
+    dispatch = parser {
+        case "/dropbox/connect?" raw_token=(.*) -> access_page(Text.to_string(raw_token))
+        case (.*) -> login_page()
+    }
+}
+
 Server.start(
     Server.http,
     [ { register : { doctype : { html5 } } },
-      { title : "hello", page : View.page }
+      { custom : Controller.dispatch }
     ]
 )
