@@ -31,14 +31,32 @@ client module Action {
     function error_test(_) { test(Dom.get_value(#name), Dom.get_value(#url), { error_simulation }) }
 
     function add_job(name, url, uri, freq) {
+
         timer = Scheduler.make_timer(freq*1000, function() { Job.check(name, url, uri) });
         Job.check(name, url, uri); timer.start();
+
+        function remove(_) { timer.stop(); Dom.remove(#{name}); }
+        function edit(_) {
+            timer.stop(); Dom.remove(#{name});
+            Dom.set_value(#name, name); Dom.set_value(#url, url)
+            Dom.set_value(#freq, String.of_int(freq))
+        }
+
+        edit_btn = <a class="btn-mini" onclick={edit}><i class="icon-edit"></i></a>
+        remove_btn = <a class="btn-mini" onclick={remove}><i class="icon-remove"></i></a>
+        player_id = "{name}_player";
+
+        // Start and pause buttons definitions depend on each other:
+        recursive function stop(_) { timer.stop(); #{player_id} = start_btn }
+              and function start(_) { timer.start(); #{player_id} = stop_btn }
+              and stop_btn = <a class="btn-mini" onclick={stop}><i class="icon-pause"></i></a>
+              and start_btn = <a class="btn-mini" onclick={start}><i class="icon-play"></i></a>
+
         // Add a new line on top of the job list
         #jobs += <tr id=#{name}>
                     <td>{url} each {freq} sec</td>
-                    <td></td>
+                    <td><span id=#{player_id}>{stop_btn}</span>{edit_btn}{remove_btn}</td>
                  </tr>;
-
     }
 
     function submit_job(_) {
