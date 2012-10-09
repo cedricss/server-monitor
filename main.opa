@@ -31,6 +31,7 @@ module Job {
 
     exposed @async function add(name, url, freq){ /monitor/jobs[name] <- (~{ url, freq }) }
     exposed @async function remove(name){ Db.remove(@/monitor/jobs[name]) }
+    exposed function get_all(){ /monitor/jobs }
 }
 
 client module Action {
@@ -64,13 +65,13 @@ client module Action {
         remove_btn = <a class="btn-mini" onclick={remove}><i class="icon-remove"></i></a>
         player_id = "{name}_player";
 
-        // Start and pause buttons definitions depend on each other
+        // Start and pause buttons definitions depend on each other:
         recursive function stop(_) { timer.stop(); #{player_id} = start_btn }
               and function start(_) { timer.start(); #{player_id} = stop_btn }
               and stop_btn = <a class="btn-mini" onclick={stop}><i class="icon-pause"></i></a>
               and start_btn = <a class="btn-mini" onclick={start}><i class="icon-play"></i></a>
 
-        // Add a new line on top of the job list:
+        // Add a new line on top of the job list
         #jobs += <tr id=#{name}>
                     <td>{url} each {freq} sec</td>
                     <td><span id=#{player_id}>{stop_btn}</span>{edit_btn}{remove_btn}</td>
@@ -96,6 +97,14 @@ client module Action {
         case ({some:uri}, {some:name}, {some:freq}): add_job(name, Dom.get_value(#url), uri, freq)
         default: void // some invalid inputs, don't add the job
         }
+    }
+
+    @async function load_all(_) {
+        Map.iter(
+            { function(name, job)
+                Option.switch(Action.add_job(name, job.url, _, job.freq), void, Uri.of_string(job.url))
+            }, Job.get_all()
+        )
     }
 
 }
@@ -127,7 +136,7 @@ module View {
             <div id="loading" style="width: 100%" class="progress progress-striped active">
                 <div id="progress" class="bar" style="width: 0%;"></div>
             </div>
-            <table class="table table-striped table-bordered"><tbody id=#jobs></tbody></table>
+            <table class="table table-striped table-bordered"><tbody id=#jobs onready={Action.load_all}></tbody></table>
         </div>
         </div>
     }
