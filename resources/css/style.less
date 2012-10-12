@@ -1,0 +1,148 @@
+@bg-dark: #2F2F2C;
+
+.border-radius (@radius: 5px) {
+    border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+}
+
+.box-shadow (@s1) {
+    -moz-box-shadow: @s1;
+    -webkit-box-shadow: @s1;
+    -o-box-shadow: @s1;
+    box-shadow: @s1;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color:#3F3F3F;
+    background-color: #FCFDFF
+}
+
+.centered {
+    text-align: center;
+}
+
+.well {
+    border: 1px solid #D4E3F8;
+    background-color:transparent;
+}
+pre.code {
+    background: @bg-dark;
+    color: white;
+}
+
+h1 .label {
+    margin-bottom: 15px;
+}
+
+h1 {
+    color: #1173B4;  
+    font-size: 44px;
+    font-weight: 300;
+}
+
+h2 {
+    margin-top:0px;
+    padding:0;
+    line-height:30px;
+    margin-bottom:0px;
+    font-size: 21px;
+    font-weight: 300;
+    color: #A5A5A5;
+}
+
+h4, h5 { 
+    font-weight: 200;
+}
+
+h4 {
+    color: #1173B4;
+}
+
+hr {
+    margin-left: 15%;
+    margin-right: 15%;
+    color: #E5F0F7;
+    background-color: #E5F0F7;
+    height: 1px;
+    border: 0;
+}
+
+header {
+    padding: 30px 0 0 0 ;
+    margin-bottom: 0px;
+
+}
+
+footer {
+    background-color: #F4FAFF;
+    padding: 30px 0;
+    margin-top: 10px;
+}
+
+pre.code {
+    background: @bg-dark;
+    color: white;
+}
+
+p.note {
+    color:gray;
+}
+
+.button {
+    .border-radius(8px);
+    .box-shadow(rgba(0, 0, 0, 0.1) 0px 1px 1px 0px);
+    background-color: #216AA5;
+    border: 3px solid whiteSmoke;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    line-height: normal;
+    outline-color: white;
+    outline-style: none;
+    outline-width: 0px;
+    padding: 10px 15px 10px 15px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.button-inverse {
+    background-color: #161616;
+}
+
+.button-large {
+    .border-radius(13px);
+    font-size: 15px;
+    padding: 16px 24px 16px 24px;
+}
+
+.label {
+    font-size: 11.844px;
+    font-weight: normal;
+    line-height: 26px;
+    text-shadow: none;
+    padding: 5px;
+}
+
+.label-info {
+    background-color: #3790F1;
+}
+
+.label-inverse {
+    background-color: whiteSmoke;
+    color: #797979;
+}
+
+.button:hover {
+    color:white;
+}
+
+.screencap {
+    .border-radius(13px);
+    .box-shadow(rgba(0, 0, 0, 0.1) -3px -3px 0px 0);
+    border: 18px solid #161616;
+    width:85%;
+    margin: 20px 0 20px 0;
+}

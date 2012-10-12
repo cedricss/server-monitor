@@ -48,12 +48,12 @@ client module Action {
 
     function msg(url, class, msg) { // Add a log on top of the logs list
         #info += <div>
-                    <span class="label">{Date.to_string_time_only(Date.now())}</span>
+                    <span class="label label-inverse">{Date.to_string_time_only(Date.now())}</span>
                     <span class="label {class}">{url} {msg}</span>
                  </div>
     }
 
-    function up(url) { msg(url, "label-success", "is UP") }
+    function up(url) { msg(url, "label-info", "is UP") }
     function invalid(url) { msg("ERROR: {url}", "label-inverse", "an invalid url") }
     function down(name, url, failure, status) { msg(url, "label-important", "is DOWN ({failure})"); Job.log(name, "DOWN", url, status); }
     function test(name, url, status) { msg("", "label-inverse", "You should see a Dropbox popup on your desktop"); Job.log(name, "TEST", url, status); }
@@ -118,14 +118,89 @@ client module Action {
             }, jobs
         )
     }
-
 }
 
 module View {
 
+    footer =
+        <footer>
+            <div class="container">
+              <div class="row">
+                  <div class="offset2 span4">
+                      <p>Designed and built at <a href="http://opalang.org">Opalang</a> by <a href="https://github.com/cedricss">Cédric Soulas</a>.</p>
+                      <p>Code licensed under MIT. <a href="https://github.com/cedricss/server-monitor">Source code on Github</a>.</p>
+                  </div>
+                  <div class="span5">
+                      <p><strong>Caveat</strong>: This application is a proof of concept, aim to learn the <a href="http://opalang.org">Opa Framework</a> and to present a Dropbox-based database use case.</p><p>  The <a href="http://server-monitor.herokuapp.com/demo">demo</a> will stop monitoring your servers as soon as you close the  page:<br/><a href="https://github.com/cedricss/server-monitor">fork</a>  the code and make you own production-ready version!</p>
+                  </div>
+              </div>
+            </div>
+        </footer>
+
+    function welcome() {
+        <header class="centered">
+            <div class="container">
+                <h1>Server Monitoring <span class="label label-info">Proof of Concept</span></h1>
+                <h2>Monitor the health of your servers.</h2>
+                <h2>Receive alerts when something goes wrong.</h2>
+                <p><br/>
+                    <a class="button button-large" href="http://server-monitor.herokuapp.com/demo">Try the demo »</a>
+                    <a class="button button-large" href="https://github.com/cedricss/server-monitor">Get on Github »</a>
+                </p>
+                <p class="note">The demo will create a folder named <strong>server-monitor</strong> in your Dropbox Apps folder.<br/>
+                   It will <strong>only</strong> have access to this folder.
+                </p>
+          </div>
+       </header>
+        <div class="container">
+          <hr/>
+          <div class="row">
+            <div class="offset1 span4">
+              <h4>Dropbox Storage</h4>
+              <p>All your jobs and logs are saved on your personal Dropbox account. Nothing is stored on the application server.</p>
+              <p></p>
+            </div>
+            <div class="span4">
+              <h4>Dropbox Alerts</h4>
+              <p>If one of your sever goes down, a Dropbox popup will appear on your desktop.</p>
+            </div>
+            <div class="span3">
+              <h4>Open Source</h4>
+              <p>This demo is just a hundred line of code. Get the <a href="https://github.com/cedricss/server-monitor">source on Github</a>.</p>
+              <p></p>
+            </div>
+          </div>
+          <hr/>
+          <div class="row centered">
+            <div class="offset1 span10">
+            <a href="resources/img/screenshot.png" target="_blank"><img class="screencap" src="resources/img/screenshot.png"/></a>
+            </div>
+          </div>
+          <div class="row">
+            <hr/>
+            <div class="offset2 span8">
+            <h4>Compile and run</h4>
+            <p>This demo is developped with the <a href="http://opalang.org" target="_blank">Opa Framework for JavaScript</a>.
+            </p>
+            <ul>
+            <li><a href="http://opalang.org" class="" target="_blank">Install Opa</a></li>
+            <li><a href="https://www.dropbox.com/developers/apps" target="_blank">Create a Dropbox app</a> and use the app keys to start the application</li>
+            <li>Get the source code, complie and run the application:</li>
+            </ul>
+            <pre class="code"><code>$ git clone https://github.com/cedricss/server-monitor.git
+$ cd server-monitor
+$ opa main.opa
+$ ./main.js --db-remote:monitor appkey:appsecret
+</code></pre>
+            </div>
+          </div>
+        </div>
+        <>{footer}</>
+    }
+
     function page() {
         <div class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container">
-                <a href="/hero" class="brand">Server Monitor</a><ul class="nav "></ul>
+                <a href="/" class="brand">Server Monitor</a><ul class="nav "><li><a href="/">Home</a></li></ul>
         </div></div></div>
         <div style="margin-top:50px" class="container">
         <div class="row-fluid">
@@ -136,8 +211,8 @@ module View {
                 <label>Monitored Url</label><input type="text" id=#url value="http://opalang.org"/><span class="help-inline"></span>
                 <label>Frequency</label><input class="input-mini" type="text" id=#freq value="3"/><span class="help-inline">sec</span>
                 </div>
-                <a class="btn btn-primary" onclick={Action.submit_job}><i class="icon-plus icon-white"/> Add and run</a>
-                <a class="btn btn-small btn-inverse" onclick={Action.error_test}><i class="icon-fire icon-white"/> Simulate a failure</a>
+                <a class="button" onclick={Action.submit_job}><i class="icon-plus icon-white"/> Add and run</a>
+                <a class="button button-inverse" onclick={Action.error_test}><i class="icon-fire icon-white"/> Simulate a failure</a>
             </form>
         </div>
         <div class="span6">
@@ -152,22 +227,24 @@ module View {
             <table class="table table-striped table-bordered"><tbody id=#jobs onready={Action.load_all}></tbody></table>
         </div>
         </div>
+        <>{footer}</>
     }
 }
 
 module Controller {
 
     DropboxUser = DbDropbox.User(monitor)
+    callback_domain = "http://server-monitor.herokuapp.com/demo"
 
     private function access_page(raw_token) {
         match (DropboxUser.get_access(raw_token)) {
-        case { success } -> Resource.default_redirection_page("/")
+        case { success } -> Resource.default_redirection_page("/demo")
         case { failure : error } -> Resource.html("Error", <>{error}</>)
         }
     }
 
     private function login_page() {
-        redirect = "http://localhost:8080/dropbox/connect"
+        redirect = "{callback_domain}/dropbox/connect"
         if (DropboxUser.is_authenticated()) {
           Resource.page("Server monitor", View.page())
         }else{
@@ -179,14 +256,25 @@ module Controller {
     }
 
     dispatch = parser {
-        case "/dropbox/connect?" raw_token=(.*) -> access_page(Text.to_string(raw_token))
+        case "/demo/dropbox/connect?" raw_token=(.*) -> access_page(Text.to_string(raw_token))
+        case "/" -> Resource.page("Server Monitor", View.welcome())
         case (.*) -> login_page()
     }
 }
 
+import-plugin unix
+
+get_env = %% BslSys.get_env_var %%
+port = Int.of_string(Option.default("8080", get_env("PORT")))
+
 Server.start(
-    Server.http,
-    [ { register : { doctype : { html5 } } },
+    { Server.http with ~port },
+    [
+      {resources: @static_resource_directory("resources")},
+      { register : [ { doctype : { html5 } },
+                     { css : [ "resources/css/style.css" ] }
+                    ]
+      },
       { custom : Controller.dispatch }
     ]
 )
