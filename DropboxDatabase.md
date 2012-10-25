@@ -1,6 +1,10 @@
-# Using Dropbox as a Database in Opa #
+# New Dropbox Database Back-end for Opa #
 
 I added in [Opa 1.0.7](http://opalang.org) a new database back-end working on top of Dropbox and created a [demo application](http://server-monitor.herokuapp.com) using it. Here are some details about this new (and experimental) back-end.
+
+<img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/dropbox-storage.png"/>
+
+<!-- more -->
 
 ## Introduction: Databases in Opa ##
 
@@ -30,17 +34,19 @@ And to get all of them, it is simply:
 		/monitor/jobs
 	}
 
+As we can see, Opa comes with a special _path notation_ to access and update the database.
+
 The default database back-end in Opa is [MongoDB](http://www.mongodb.org). Follow this [tutorial](https://github.com/MLstate/opalang/wiki/Hello%2C-database) to learn more about it or read the [database chapter](https://github.com/MLstate/opalang/wiki/The-database).
 
 ## <a name="use-case"></a> Storing Application Data in Dropbox ##
 
-For some reasons, we may want to store data not in the application database, but on a personal user space like Dropbox. For example:
+We may want to store data not in the application database, but on a personal user space like Dropbox. For example:
 
 - to avoid storing sensible data on the application server, if the user trust Dropbox more,
 - to save user data without hosting a database,
 - to provide the user with a ready-to-use back-up of the server database.
 
-To store the `job` above in a Dropbox folder, we can use a classic nodejs Dropbox library:
+To store the `job` above in a Dropbox folder, we could use a classic nodejs Dropbox library:
 
 	client.put("path/to/directory/filename.json", serialize(job), callback)
 	client.get(
@@ -50,7 +56,7 @@ To store the `job` above in a Dropbox folder, we can use a classic nodejs Dropbo
 
 ## Switching from MongoDB to Dropbox ##
 
-What if we could use the Opa path notation seen in the introduction to perform Dropbox storage in a more elegant way, and closer to the usual file system representation:
+It would be great to use the Opa path notation seen in the introduction to perform Dropbox storage in a more elegant way, and closer to the usual file system representation:
 
 	/path/to/directory[filename] <- "content"  // write 
 	content = /path/to/directory[filename]     // read
@@ -63,15 +69,16 @@ This is now possible with the new Dropbox back-end. To switch the previous examp
 
 That's all. And all the other functions seen in the introduction remain unchanged!
 
-## Path Notation and Automatic Json Serialization ##
+## Behind the Scene ##
+### Path Notation and Automatic Json Serialization ###
 
-<img src="file:///Users/cedric/git/github/server-monitor/resources/img/dropbox-storage.png"/>
+<img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/dropbox-storage.png"/>
 
 How it works behind the scene? When we write:
 
 	/monitor/jobs[name] <- { url:url, freq:freq }
 
-It serialize the Opa record to json, for example:
+It serializes the Opa record to json, for example:
 
 	{"url":"http://opalang.org","freq":30}
 
@@ -81,9 +88,9 @@ After the serialization, it puts this content in the Dropbox account, regarding 
 
 	Apps/monitor/jobs/opalang.json
 
-## Non-blocking by Default ##
+### Non-blocking by Default ###
 
-To retrieve and display all job, we simply write:
+To retrieve and display all jobs, we simply write:
 
 	all_jobs = /monitor/jobs   // retrieve all the jobs
 	display(all_jobs)          // do something
@@ -99,12 +106,12 @@ What is really important here is Opa is non-blocking by default:
 
 It means two things:
 
-- in the previous example, we don't have to pass the `display` function as a callback, Opa compile it to the appropriate asynchronous and non-blocking JS code. In fact, we can even write simply `display(/monitor/jobs)` as if it were synchronous!
-- our application server doesn't block during the treatment: all other computations and client requests are fairly handled, thanks to the [CPS](http://en.wikipedia.org/wiki/Continuation-passing_style) generated code and the Opa scheduler. This generation is automatic and transparent in Opa.
+- in the previous example, we don't have to pass the `display` function as a callback, Opa compiles it to the appropriate asynchronous and non-blocking JS code. In fact, we can even write simply `display(/monitor/jobs)` as if it were synchronous!
+- our application server doesn't block during the treatment: all other computations and client requests are fairly handled, thanks to the [CPS](http://en.wikipedia.org/wiki/Continuation-passing_style) generated code and the Opa scheduler. This is automatic and transparent in Opa.
 
 ## Going Further ##
 
-We are not limited to maps, simple value storage like is possible:
+We are not limited to maps. Simple value storage is possible:
 
     database monitor @dropbox {
       int /counter
@@ -112,7 +119,7 @@ We are not limited to maps, simple value storage like is possible:
 
 I didn't detail here the user authentication process with Dropbox, it's just two functions you can read in the [source code](https://github.com/cedricss/server-monitor/blob/master/main.opa#L158) of the server-monitor demo.
  
-Specify your [Dropbox App keys](https://www.dropbox.com/developers/apps) in the command line:
+By the way, here is how to specify your [Dropbox App keys](https://www.dropbox.com/developers/apps) in the command line:
 
     ./app.js --db-remote:monitor appkey:appsecret
 
@@ -120,3 +127,4 @@ Specify your [Dropbox App keys](https://www.dropbox.com/developers/apps) in the 
 
 - This release is experimental. You can [submit issues on github](https://github.com/MLstate/opalang/issues).
 - This back-end is of course limited compared to powerful MongoDB queries, but it can still be very useful in <a href="#use-case">some cases</a>.
+
