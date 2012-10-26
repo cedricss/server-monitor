@@ -122,6 +122,22 @@ client module Action {
 
 module View {
 
+    headers =
+<script type="text/javascript">{Xhtml.of_string_unsafe("
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35889407-1']);
+  _gaq.push(['_trackPageview']);
+  (function() \{
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+")}</script>
+
+    function full_page(page) {
+        Resource.full_page("Server Monitor", page, headers, {success}, [])
+    }
+
     footer =
         <footer>
             <div class="container">
@@ -246,7 +262,7 @@ module Controller {
     private function login_page() {
         redirect = "{callback_domain}/dropbox/connect"
         if (DropboxUser.is_authenticated()) {
-          Resource.page("Server monitor", View.page())
+          View.full_page(View.page())
         }else{
           match (DropboxUser.get_login_url(redirect)) {
           case { success : url } -> Resource.default_redirection_page(url)
@@ -257,7 +273,7 @@ module Controller {
 
     dispatch = parser {
         case "/demo/dropbox/connect?" raw_token=(.*) -> access_page(Text.to_string(raw_token))
-        case "/" -> Resource.page("Server Monitor", View.welcome())
+        case "/" -> View.full_page(View.welcome())
         case (.*) -> login_page()
     }
 }
