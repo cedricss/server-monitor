@@ -20,7 +20,7 @@ A database storing those jobs is defined this way in Opa:
 
 - `monitor` is the name of the database
 - `/jobs` is the name of the collection
-- `stringmap(job)` is the type of the collection: a map where the key is a string and the value is of type `job`.
+- `stringmap(job)` is the type of the collection: a map where keys are strings and values are of type `job`.
 
 A function to add a job in the database looks like:
 
