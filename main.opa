@@ -184,11 +184,11 @@ module View {
             </div>
             <div class="span4">
               <h4>Dropbox Alerts</h4>
-              <p>If one of your sever goes down, a Dropbox popup will appear on your desktop.</p>
+              <p>If one of your severs goes down, a Dropbox popup will appear on your desktop.</p>
             </div>
             <div class="span3">
               <h4>Open Source</h4>
-              <p>This demo is just a hundred line of code. Get the <a href="https://github.com/cedricss/server-monitor">source on Github</a>.</p>
+              <p>This demo is just a hundred lines of code. Get the <a href="https://github.com/cedricss/server-monitor">source on Github</a>.</p>
               <p></p>
             </div>
           </div>
@@ -202,7 +202,7 @@ module View {
             <hr/>
             <div class="offset2 span8">
             <h4>Compile and run</h4>
-            <p>This demo is developped with the <a href="http://opalang.org" target="_blank">Opa Framework for JavaScript</a>.
+            <p>This demo has been developped with the <a href="http://opalang.org" target="_blank">Opa Framework for JavaScript</a>.
             </p>
             <ul>
             <li><a href="http://opalang.org" class="" target="_blank">Install Opa</a></li>
