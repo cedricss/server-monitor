@@ -138,13 +138,19 @@ module View {
         Resource.full_page("Server Monitor", page, headers, {success}, [])
     }
 
+    twitter_follow = <a href="https://twitter.com/opalang" class="twitter-follow-button" data-show-count="true" data-lang="en">Follow @opalang</a>
+<script>{Xhtml.of_string_unsafe("
+!function(d,s,id)\{var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))\{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");
+")}</script>
+
     footer =
         <footer>
             <div class="container">
               <div class="row">
                   <div class="offset2 span4">
-                      <p>Designed and built at <a href="http://opalang.org">Opalang</a> by <a href="https://github.com/cedricss">Cédric Soulas</a>.</p>
+                      <p>Designed and built at <a href="http://opalang.org">Opalang</a> by <a href="https://twitter.com/CedricSoulas">Cédric Soulas</a>.</p>
                       <p>Code licensed under MIT. <a href="https://github.com/cedricss/server-monitor">Source code on Github</a>.</p>
+                      <p>{twitter_follow}</p>
                   </div>
                   <div class="span5">
                       <p><strong>Caveat</strong>: This application is a proof of concept, aim to learn the <a href="http://opalang.org">Opa Framework</a> and to present a Dropbox-based database use case.</p><p>  The <a href="http://server-monitor.herokuapp.com/demo">demo</a> will stop monitoring your servers as soon as you close the  page:<br/><a href="https://github.com/cedricss/server-monitor">fork</a>  the code and make you own production-ready version!</p>
