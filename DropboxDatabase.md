@@ -40,7 +40,9 @@ The default database back-end in Opa is [MongoDB](http://www.mongodb.org). Follo
 
 ## <a name="use-case"></a> Storing Application Data in Dropbox ##
 
-We may want to store data not in the application database, but on a personal user space like Dropbox. For example:
+We have seen how to store data in the application database and how this is convenient and easy.
+But what if we want to store them elsewhere ?
+Let's see an exemple of storing data on a personal user space like Dropbox. This could be usefull for example:
 
 - to avoid storing sensible data on the application server, if the user trust Dropbox more,
 - to save user data without hosting a database,
@@ -56,7 +58,7 @@ To store the `job` above in a Dropbox folder, we could use a classic nodejs Drop
 
 ## Switching from MongoDB to Dropbox ##
 
-It would be great to use the Opa path notation seen in the introduction to perform Dropbox storage in a more elegant way, and closer to the usual file system representation:
+Using a classic nodejs Dropbox library is quite easy. But it would be great to use the Opa path notation seen in the introduction to perform Dropbox storage in a more elegant way, and closer to the usual file system representation:
 
 	/path/to/directory[filename] <- "content"  // write 
 	content = /path/to/directory[filename]     // read
@@ -67,7 +69,8 @@ This is now possible with the new Dropbox back-end. To switch the previous examp
       stringmap(job) /jobs
     }
 
-That's all. And all the other functions seen in the introduction remain unchanged!
+That's all. The Opa compiler will handle the details (which we will see in the next chapter). Quite easy, isn't it ?
+And the more powerfull part is that all the other functions seen in the introduction remain unchanged !!!
 
 ## Behind the Scene ##
 ### Path Notation and Automatic Json Serialization ###
@@ -99,7 +102,7 @@ This will retrieve the list of json file stored in the `Apps/monitor/jobs/` fold
 
 All those requests are sent in parallel to the Dropbox API. The final `all_jobs` value is constructed progressively, as the responses arrive from Dropbox (they may arrive out of order).
 
-What is really important here is Opa is non-blocking by default:
+What is really important here is that Opa is non-blocking by default:
 
 > Modern applications use a lot of asynchronous calls. Dealing with callbacks manually can be painful, and failing to do so properly blocks the application runtime.
 > To make asynchronous programming easy without blocking the application, Opa-generated JavaScript code uses smart continuations. (http://opalang.org)
