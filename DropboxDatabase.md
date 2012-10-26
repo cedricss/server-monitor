@@ -66,8 +66,8 @@ Using a classic nodejs Dropbox library is quite easy. But it would be great to u
 This is now possible with the new Dropbox back-end. To switch the previous example from MongoDB to Dropbox, we just have to add a `@dropbox` annotation:
 
 	database monitor @dropbox {
-      stringmap(job) /jobs
-    }
+		stringmap(job) /jobs
+	}
 
 That's all. The Opa compiler will handle the details (which we will see in the next chapter). Quite easy, isn't it ?
 And the more powerfull part is that all the other functions seen in the introduction remain unchanged !!!
