@@ -15,7 +15,7 @@ Main website and live demo at <a href="http://server-monitor.herokuapp.com/">htt
 Dropbox Storage
 ---------------
 - All your configured jobs and logs are saved on your personal Dropbox account. Nothing is stored on the application server.
-- If one of your sever goes down, a Dropbox popup will appear on your desktop.
+- If one of your severs goes down, a Dropbox popup will appear on your desktop.
 
 The following code is a Dropbox database in Opa. Change the `@dropbox` annotation with `@mongo` and the app will run on top of MongoDB instead. It's that simple.
 
