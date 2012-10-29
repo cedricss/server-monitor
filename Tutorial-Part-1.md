@@ -1,10 +1,10 @@
 # Server Monitor - Opa Tutorial Part 1 #
 
-I recently added in [Opa 1.0.7](http://opalang.org) a [new database back-end working on top of Dropbox](http://cedrics.tumblr.com/post/34171076153/opa-dropbox-database). I created a [demo application](http://server-monitor.herokuapp.com) using it.
+I recently created a [demo application](http://server-monitor.herokuapp.com) using a [new database back-end working on top of Dropbox](http://cedrics.tumblr.com/post/34171076153/opa-dropbox-database).
 
 This tutorial covers all steps of the creation of this application. 
 
-<img src="http://server-monitor.herokuapp.com/resources/img/screenshot.png"/>
+<a href="http://server-monitor.herokuapp.com/resources/img/screenshot.png"><img src="http://server-monitor.herokuapp.com/resources/img/screenshot.png"/></a>
 
 At the end of this 4 episodes tutorial, you'll be will able to:
 
@@ -17,11 +17,13 @@ At the end of this 4 episodes tutorial, you'll be will able to:
 - use the Opa path notation to handle data stored in a MongoDB database,
 - switch from a MongoDB database to a Dropbox one.
 
+<!-- more -->
+
 # View #
 
 ## Initial User Interface ##
 
-<img src="resources/img/initial-view.png"/>
+<a href="https://raw.github.com/cedricss/server-monitor/demo/resources/img/initial-view.png"><img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/initial-view.png"/></a>
 
 Let's start to design the user interface. We create a `View` module with a `page` function inside. It will serve the HTML page:
 
@@ -78,7 +80,7 @@ We compile and see the result at the `http://localhost:8080` url:
  
 ## Bootstrap theme ##
 
-We want to use the default <a href="http://twitter.github.com/bootstrap/">bootstrap css theme</a> provided by Tweeter. We just have to import the theme at the beginning of our file. We also import the glyphicons and the responsive css so the application can work well on different display sizes:
+We want to use the default <a href="http://twitter.github.com/bootstrap/">bootstrap css theme</a> provided by Twitter. We just have to import the theme at the beginning of our file. We also import the glyphicons and the responsive css so the application can work well on different display sizes:
 
     import stdlib.themes.bootstrap.css
     import stdlib.themes.bootstrap.icons
@@ -90,13 +92,15 @@ Or shorter:
 
 We compile and restart the server to appreciate the easy style improvement!
 
-> Get the [full source code on github at this step](https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa).
+Get the [source code at this step on github](https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa).
 
 # Add jobs (Client-side) #
 
 ## Update the Dom ##
 
-We add a new `Action` module that will be responsible of the user interface updates. Opa dispatches the code on the server side and the client side automatically, and automates the calls between client and server. To get more control and optimize your code, you can use `server` and `client` directives to tweak the compiler default dispatch behavior. For example, here we want all user interface related actions to be computed on the client side as much as possible. To do so, we just add a `client` directive on the module to affect all functions inside it:
+We add a new `Action` module that will be responsible of the user interface updates. Opa dispatches the code on the server side and the client side automatically, and automates the calls between client and server. To get more control and optimize your code, you can use `server` and `client` directives to tweak the compiler default dispatch behavior.
+
+For example, here we want all user interface related actions to be computed on the client side as much as possible. To do so, we just add a `client` directive on the module to affect all functions inside it. Let's create two functions inside this module, one to add a job in the list of jobs, one to add a message in the logs:
 
     client module Action {
 
@@ -127,9 +131,9 @@ We add a new `Action` module that will be responsible of the user interface upda
 
 ## Parse User Inputs ##
 
-<img src="resources/img/user-inputs.png"/>
+<a href="https://raw.github.com/cedricss/server-monitor/demo/resources/img/user-inputs.png"><img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/user-inputs.png"/></a>
 
-Inside the `Job` module, we need to add functions to check the format of user inputs (is it a integer? is it an well formed url?). The following code is based on the default parsers defined in the `(Parser)[http://doc.opalang.org/module/stdlib.core.parser/Parser]` module.
+Inside the `Job` module, we need to add functions to check the format of user inputs (is it a integer? is it an well formed url?). The following code is based on the default parsers defined in the [`Parser`](http://doc.opalang.org/module/stdlib.core.parser/Parser) module.
 
 Those parsing functions return an `option`, which is either `{none}` (it failed to parse the value), or `{some:v}` where `v` is the constructed value after the parsing and with the expected type (int, url, etc).
 
@@ -159,21 +163,20 @@ Those parsing functions return an `option`, which is either `{none}` (it failed 
 
     }
 
-> `Dom.get_value(#url)` returns the value set in the input of id `#url`
-
-> **Unused arguments**
->
-> The `_` argument in the `submit_job` function means we don't care what is the name and the value of this argument. In this case, it is a value of type `Dom.event` given by events like `onclick` or `onready` (see below).
+> - `Dom.get_value(#url)` returns the value set in the input of id `url`
+> - The `_` argument in the `submit_job` function means we don't care what is the name and the value of this argument. In this case, it is a value of type `Dom.event` given by events like `onclick` or `onready` (see below).
 
 ## Dom events ##
 
-In the View.page function, we update the `Add and run` html button so the `submit_job` function is called when a user click on it. It's easy to deal with dom events with Opa: we just put the function to call inside curly brackets and attach it to the event:
+In the `View.page` function, we update the "Add and run" html button so the `submit_job` function is called when a user click on it. It's easy to deal with dom events with Opa: we just put the function to call inside curly brackets and attach it to the event:
 
     <a class="btn btn-primary" onclick={ Action.submit_job }>
       <i class="icon-plus icon-white"/> Add and run
     </a>
 
-> [See all the changes we made in this "Add Jobs" section](https://github.com/cedricss/server-monitor/commit/cd66d95c5f72d12b32e9f74fe2c7d1b57526aa07).
+[See all the changes we made in this "Add Jobs" section](https://github.com/cedricss/server-monitor/commit/cd66d95c5f72d12b32e9f74fe2c7d1b57526aa07).
+
+Compile and try the "Add an run" button providing both valid and invalid input values: jobs are added in the list of jobs or error messages are printed in the logs.
 
 ## To be continued ##
 
