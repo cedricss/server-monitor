@@ -1,4 +1,4 @@
-Server Monitoring based on Dropbox
+Server Monitoring using Dropbox as a Database
 ==================================
 
 Overview
