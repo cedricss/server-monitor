@@ -225,6 +225,21 @@ $ ./main.js --db-remote:monitor appkey:appsecret
 </code></pre>
             </div>
           </div>
+          <div class="row">
+            <div class="offset2 span8">
+            <h4>Learn more</h4>
+            <ul>
+              <li>Article: <a href="http://cedrics.tumblr.com/post/34171076153/opa-dropbox-database">
+                      New Dropbox Database Back-end for Opa
+                  </a>
+              </li>
+              <li>Tutorial: <a href="http://cedrics.tumblr.com/post/34566924859/server-monitor-opa-tutorial-part-1">
+                     Server Monitor - Opa Tutorial Part 1
+                   </a>
+              </li>
+            </ul>
+            </div>
+          </div>
         </div>
         <>{footer}</>
     }
