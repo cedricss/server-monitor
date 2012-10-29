@@ -50,4 +50,5 @@ Run
 Tutorial
 --------
 
-Have a look at the <a href="https://github.com/cedricss/server-monitor/commits/master">commits list</a>: this is how the application was built, step by step. 
+- [Tutorial - Part 1](http://cedrics.tumblr.com/post/34566924859/server-monitor-opa-tutorial-part-1)
+- Or have a look at the <a href="https://github.com/cedricss/server-monitor/commits/master">commits list</a>: this is how the application was built, step by step. 
