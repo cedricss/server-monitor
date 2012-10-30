@@ -1,3 +1,7 @@
+# Server Monitor - Opa Tutorial Part 4 #
+
+## *Work in progress!* ##
+
 # Switch from MongoDB to Dropbox database, in just a few minutes #
 
 ## Database directives ##
@@ -21,7 +25,7 @@ Yes, that's all, your database now runs on top of Dropbox. You don't have to mod
 
 ## Dropbox login page ##
 
-<img src="resources/img/dropbox-login.png"/>
+<img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/dropbox-login.png"/>
 
 You need to add functions so the user can log into your app with his dropbox account. Let's take the opportunity to put it inside a `Controller` module:
 

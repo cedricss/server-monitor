@@ -1,12 +1,12 @@
 # Server Monitor - Opa Tutorial Part 1 #
 
-I recently created a [demo application](http://server-monitor.herokuapp.com) using a [new database back-end working on top of Dropbox](http://cedrics.tumblr.com/post/34171076153/opa-dropbox-database).
+We recently deployed a [demo application](http://server-monitor.herokuapp.com) using a [new database back-end working on top of Dropbox](http://blog.opalang.org).
 
 This tutorial covers all steps of the creation of this application. 
 
 <a href="http://server-monitor.herokuapp.com/resources/img/screenshot.png"><img src="http://server-monitor.herokuapp.com/resources/img/screenshot.png"/></a>
 
-At the end of this 4 episodes tutorial, you'll be will able to:
+At the end of this 4 episodes tutorial, you will be able to:
 
 - create an application View using the native support of HTML in Opa,
 - add event handlers, without thinking about where is running the code thanks to Opa automatic client/server code dispatcher,

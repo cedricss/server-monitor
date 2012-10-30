@@ -1,8 +1,10 @@
 # Server Monitor - Opa Tutorial Part 2 #
 
+## *Work in progress!* ##
+
 # Server Monitoring #
 
-<img src="resources/img/check-servers.png"/>
+<img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/check-servers.png"/>
 
 We use `WebClient.Get.try_get(uri)` to check if a server behind an URL is reacheable. This funcion return variants, like `{ failure : { timeout } }`, depending on the server response. We use pattern matching (`match` and `case` keywords) to analyze each variant:
 
@@ -50,7 +52,7 @@ Now we can complet the `add_job` function to call the `Job.check` function regul
 
 # Add buttons #
 
-<img src="resources/img/job-buttons.png"/>
+<img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/job-buttons.png"/>
 
 ## Edit and remove buttons ##
 
@@ -90,7 +92,7 @@ For each line inside the list of jobs, we want to display a Play/Pause toggle bu
 
 When we click on `Stop` the timer stop and the `Start` button is displayed instead. This is similar for the `Play` button. As you can see, those two states of the buttons depends on each other:
 
-<img src="cyclic-defintion.png"/>
+<img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/cyclic-defintion.png"/>
 
 We use the `recursive` and `and` keywords to define such a cycle definition:
 
