@@ -229,13 +229,9 @@ $ ./main.js --db-remote:monitor appkey:appsecret
             <div class="offset2 span8">
             <h4>Learn more</h4>
             <ul>
-              <li>Article: <a href="http://cedrics.tumblr.com/post/34171076153/opa-dropbox-database">
-                      New Dropbox Database Back-end for Opa
+              <li>Article: <a href="http://blog.opalang.org/2012/10/dropbox-as-database.html">
+                      Dropbox-as-a-Database
                   </a>
-              </li>
-              <li>Tutorial: <a href="http://cedrics.tumblr.com/post/34566924859/server-monitor-opa-tutorial-part-1">
-                     Server Monitor - Opa Tutorial Part 1
-                   </a>
               </li>
             </ul>
             </div>
