@@ -9,8 +9,7 @@ shouldn't just use *our* cloud storage account to store *our* data.
 Why everything should be centralized? 
 Why all applications and services behave like Mega and not like BitTorrent?
 
-That why we introduced in [Opa 1.0.7](http://opalang.org) a new database back-end working on top of Dropbox.
-If you're new to [Opa](http://opalang.org), you can read this [introduction](https://github.com/MLstate/opalang/wiki/A-tour-of-Opa) but as the syntax should look familiar, you should still understand the code without any prior knowledge of Opa.
+That why we introduced in [Opa 1.0.7](http://opalang.org) a new database back-end working on top of Dropbox. If you're new to [Opa](http://opalang.org), you can read this [introduction](https://github.com/MLstate/opalang/wiki/A-tour-of-Opa) but as the syntax should look familiar, you should still understand the code without any prior knowledge of Opa.
 
 Try a [demo application](http://server-monitor.herokuapp.com) to get an idea of the concept.
 The data of this sample application is not stored on Heroku, neither on any centralized server. 
@@ -24,8 +23,8 @@ Let's dig into details about this new (and experimental) back-end.
 
 ## Introduction: Databases in Opa ##
 
-Let's explain our demo app.
-The central notion of the app is the `job` (extracted from the [demo](http://server-monitor.herokuapp.com) above), defined with an url to monitor and an execution frequency:
+Let's explain our [demo app](http://server-monitor.herokuapp.com).
+The central notion of the app is the `job`, defined with an url to monitor and an execution frequency:
 
     type job = { string url, int freq }
 
@@ -41,49 +40,48 @@ A database storing those jobs is defined this way in Opa:
 
 A function to add a job in the database looks like:
 
-	function add(name, url, freq) {
-	    /monitor/jobs[name] <- { url:url, freq:freq }
-	}
+    function add(name, url, freq) {
+        /monitor/jobs[name] <- { url:url, freq:freq }
+    }
 
-And to get all of them, it is simply:
+And to get all of them, we write:
 
-	function get_all(){
-		/monitor/jobs
-	}
+    function get_all(){
+        /monitor/jobs
+    }
 
-As we can see, Opa comes with a special _path notation_ to access and update the database.
-
-The default database back-end in Opa is [MongoDB](http://www.mongodb.org). Follow this [tutorial](https://github.com/MLstate/opalang/wiki/Hello%2C-database) to learn more about it or read the [database chapter](https://github.com/MLstate/opalang/wiki/The-database).
+The code above is the standard way to access and update data in Opa. Follow this [tutorial](https://github.com/MLstate/opalang/wiki/Hello%2C-database) to learn more about it or read the [database chapter](https://github.com/MLstate/opalang/wiki/The-database).
+The default database back-end in Opa is [MongoDB](http://www.mongodb.org). 
 
 ## <a name="use-case"></a> Storing Application Data in Dropbox ##
 
-We have seen how to store data in the application database and how this is convenient and easy.
-But what if we want to store them on a personal user space like Dropbox? This could be usefull for example:
+To store the `job` above in a Dropbox folder, we could use a classic Node.js Dropbox library:
 
-- to avoid storing sensible data on the application server, if the user trust Dropbox more,
-- to save user data without hosting a database,
-- to provide the user with a ready-to-use back-up of the server database.
+    client.put("path/to/directory/filename.json", serialize(job), callback)
+    client.get(
+        "path/to/directory/filename.json",
+        function(status, data, metadata) { job = unserialize(data); ... }
+    )
 
-To store the `job` above in a Dropbox folder, we could use a classic nodejs Dropbox library:
-
-	client.put("path/to/directory/filename.json", serialize(job), callback)
-	client.get(
-		"path/to/directory/filename.json",
-		function(status, data, metadata) { job = unserialize(data); ... }
-	)
+And rely on standard API calls each time we want to access data. It's probably how most Dropbox-enabled apps work today.
 
 ## Switching from MongoDB to Dropbox ##
 
-Using a classic nodejs Dropbox library is quite easy. But it would be great to use the Opa path notation seen in the introduction to perform Dropbox storage in a more elegant way, and closer to the usual file system representation:
+Using a classic Node.js Dropbox library is quite easy for little data.
+But what if your application gets bigger?
+The nice database automation concept of Opa is lost, and we are back to tedious programming tasks. A typo in an API call? A possibly-hard-to-iron-out bug.
 
-	/path/to/directory[filename] <- "content"  // write 
-	content = /path/to/directory[filename]     // read
+We would love to reuse the same Opa syntax as above, especially as it would allow the same application code to either run on MongoDB centrally, or using Dropbox.
 
-This is now possible with the new Dropbox back-end. To switch the previous example from MongoDB to Dropbox, we just have to add a `@dropbox` annotation:
+    /path/to/directory[filename] <- "content"  // write 
+    content = /path/to/directory[filename]     // read
 
-	database monitor @dropbox {
-		stringmap(job) /jobs
-	}
+This is exactly what the new Opa Dropbox back-end offers. 
+The only change required to switch from MongoDB to Dropbox is to add a `@dropbox` annotation:
+
+    database monitor @dropbox {
+        stringmap(job) /jobs
+    }
 
 That's all. All the other functions seen in the introduction remain unchanged! Quite easy, isn't it? 
 
@@ -92,26 +90,26 @@ That's all. All the other functions seen in the introduction remain unchanged! Q
 
 <img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/dropbox-storage.png"/>
 
-How it works behind the scene? When we write:
+How does it work behind the scene? When we write:
 
-	/monitor/jobs[name] <- { url:url, freq:freq }
+    /monitor/jobs[name] <- { url:url, freq:freq }
 
 It serializes the Opa record to json, for example:
 
-	{"url":"http://opalang.org","freq":30}
+    {"url":"http://opalang.org","freq":30}
 
 > __Note__: the serialization works on more complex Opa structures like `list` or `options` and support embedded records
 
-After the serialization, it puts this content in the Dropbox account, regarding the current user session, at this location:
+After the serialization, content is sent to the Dropbox account, regarding the current user session, at this location:
 
-	Apps/monitor/jobs/opalang.json
+    Apps/monitor/jobs/opalang.json
 
 ### Non-blocking by Default ###
 
 To retrieve and display all jobs, we simply write:
 
-	all_jobs = /monitor/jobs   // retrieve all the jobs
-	display(all_jobs)          // do something
+    all_jobs = /monitor/jobs   // retrieve all the jobs
+    display(all_jobs)          // do something
 
 This will retrieve the list of json file stored in the `Apps/monitor/jobs/` folder, and request the content for all of them. 
 
@@ -141,8 +139,10 @@ By the way, here is how to specify your [Dropbox App keys](https://www.dropbox.c
 
     ./app.js --db-remote:monitor appkey:appsecret
 
+Welcome to the Dropbox-as-a-Service era!
+
 #### Notes ####
 
 - This release is experimental. You can [submit issues on github](https://github.com/MLstate/opalang/issues).
-- This back-end is of course limited compared to powerful MongoDB queries, but it can still be very useful in <a href="#use-case">some cases</a>.
+- This back-end is still limited compared to powerful MongoDB queries, but it can be very useful in many cases.
 
