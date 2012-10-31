@@ -23,7 +23,8 @@ Let's dig into details about this new (and experimental) back-end.
 
 ## Introduction: Databases in Opa ##
 
-Here is a type `job` (extracted from the [demo](http://server-monitor.herokuapp.com) above), defined with an url to monitor and an execution frequency:
+Let's explain our demo app.
+The central notion of the app is the `job` (extracted from the [demo](http://server-monitor.herokuapp.com) above), defined with an url to monitor and an execution frequency:
 
     type job = { string url, int freq }
 
