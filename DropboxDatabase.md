@@ -9,7 +9,8 @@ shouldn't just use *our* cloud storage account to store *our* data.
 Why everything should be centralized? 
 Why all applications and services behave like Mega and not like BitTorrent?
 
-That why we introduced in [Opa 1.0.7](http://opalang.org) a new database back-end working on top of Dropbox. 
+That why we introduced in [Opa 1.0.7](http://opalang.org) a new database back-end working on top of Dropbox.
+If you're new to [Opa](http://opalang.org), you can read this [introduction](https://github.com/MLstate/opalang/wiki/A-tour-of-Opa) but as the syntax should look familiar, you should still understand the code without any prior knowledge of Opa.
 
 Try a [demo application](http://server-monitor.herokuapp.com) to get an idea of the concept.
 The data of this sample application is not stored on Heroku, neither on any centralized server. 
