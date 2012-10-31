@@ -1,8 +1,10 @@
-# Dropbox-as-a-Database, application Tutorial, Part 1 #
+# Dropbox-as-a-Database, the tutorial #
 
 Yesterday, our [Dropbox-as-a-Database](http://blog.opalang.org/2012/10/dropbox-as-database.html) blog post raised a lot of positive comments, in particular on [Hacker News](http://news.ycombinator.com/item?id=4723087) and Twitter. To get an idea of the DaaD concept, I created a [demo application](http://server-monitor.herokuapp.com) using this new database back-end. 
 
-The demo arousing much interest, we decided not stop here! Today, we are introducing a 4 episodes tutorial to cover all steps of the creation of this application. If you can't wait for the 4 episodes then have a look at the [commits](https://github.com/cedricss/server-monitor/commits/master): as you can see, it's really a one-day app!
+The demo arousing much interest, we decided not stop here! Today, we are introducing a tutorial to cover all steps of the creation of this application. Not all aspects all covered yet, but the goal is to explain in detail how the one-day demo app was built.
+
+TL; DR: look at the [commits](https://github.com/cedricss/server-monitor/commits/master)
 
 <a href="http://server-monitor.herokuapp.com/resources/img/screenshot.png"><img src="http://server-monitor.herokuapp.com/resources/img/screenshot.png"/></a>
 
@@ -54,7 +56,9 @@ Let's start with the UI. We create a `View` module with a `page` function inside
         }
     }
 
-As we can see, Opa provides native support of HTML. We can try to write invalid HTML like deleting a closing tag: the compiler will raise a syntax error at compile time. Get the <a href="https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa">full HTML view on github.</a>
+As we can see, Opa allows to write HTML directly without quotes, which frees us from the troublesome single and double quotes in pure JavaScript. 
+Also, Opa checks the HTML structure automatically. Try removing a closing tag!
+Get the <a href="https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa">full view code on github.</a>
 
 ## Http Server ##
 
