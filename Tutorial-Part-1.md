@@ -58,6 +58,7 @@ Let's start with the UI. We create a `View` module with a `page` function inside
 
 As we can see, Opa allows to write HTML directly without quotes, which frees us from the troublesome single and double quotes in pure JavaScript. 
 Also, Opa checks the HTML structure automatically. Try removing a closing tag!
+
 Get the <a href="https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa">full view code on github.</a>
 
 ## Http Server ##
@@ -71,7 +72,7 @@ We setup (outside of the `View` module) a http server configured to serve the pa
         ]
     )
 
-> With Opa, we can define the client views and events, the http server or even the database within the same file, without any extra directives for the compiler!
+> With Opa, we can define the client views and events, the http server or even the database within the source code, without any extra directives for the compiler! Of course, code can be split between files, modules, directories...
 
 ## Compile ##
 
