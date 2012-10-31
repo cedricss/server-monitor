@@ -1,8 +1,21 @@
 # Dropbox-as-a-Database #
 
-[Opa 1.0.7](http://opalang.org) comes with a new database back-end working on top of Dropbox. We also deployed on Heroku a [demo application](http://server-monitor.herokuapp.com) using it.
+We live in the as-a era. IaaS, SaaS, PaaS. 
+Even Database-as-a-Service where companies offer SQL and NoSQL database management systems hosted online.
 
-Here are some details about this new (and experimental) back-end.
+We played with the concept a bit, and, in an era which also the one of cloud storage with 
+Dropbox, Box, Google Drive, Skydrive and the like, we wondered why applications and services 
+shouldn't just use *our* cloud storage account to store *our* data. 
+Why everything should be centralized? 
+Why all applications and services behave like Mega and not like BitTorrent?
+
+That why we introduced in [Opa 1.0.7](http://opalang.org) a new database back-end working on top of Dropbox. 
+
+Try a [demo application](http://server-monitor.herokuapp.com) to get an idea of the concept.
+The data of this sample application is not stored on Heroku, neither on any centralized server. 
+Instead, every user data is directly stored on every user Dropbox account.
+
+Let's dig into details about this new (and experimental) back-end.
 
 <img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/dropbox-storage.png"/>
 
