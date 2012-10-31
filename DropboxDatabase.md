@@ -1,4 +1,4 @@
-# New Dropbox Database Back-end for Opa #
+# Dropbox-as-a-Database #
 
 [Opa 1.0.7](http://opalang.org) comes with a new database back-end working on top of Dropbox. We also deployed on Heroku a [demo application](http://server-monitor.herokuapp.com) using it.
 
