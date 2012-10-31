@@ -1,8 +1,8 @@
 # Server Monitor - Opa Tutorial Part 1 #
 
-We recently deployed a [demo application](http://server-monitor.herokuapp.com) using a [new database back-end working on top of Dropbox](http://blog.opalang.org).
+Yesterday, the [Dropbox-as-a-Database](http://blog.opalang.org/2012/10/dropbox-as-database.html) article raised a lot of positive comments, in particular on [Hacker News](http://news.ycombinator.com/item?id=4723087) and Twitter. To get an idea of the DaaD concept, I created a [demo application](http://server-monitor.herokuapp.com) using this new database back-end. 
 
-This tutorial covers all steps of the creation of this application. 
+The demo arousing much interest, we decided not stop here! Today, we are introducing a 4 episodes tutorial to covers all steps of the creation of this application. If you can't wait for the 4 episodes, have a look at the [commits](https://github.com/cedricss/server-monitor/commits/master): as you can see, it's really a one-day app!
 
 <a href="http://server-monitor.herokuapp.com/resources/img/screenshot.png"><img src="http://server-monitor.herokuapp.com/resources/img/screenshot.png"/></a>
 
