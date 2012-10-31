@@ -1,19 +1,19 @@
-# Server Monitor - Opa Tutorial Part 1 #
+# Dropbox-as-a-Database, application Tutorial, Part 1 #
 
-Yesterday, the [Dropbox-as-a-Database](http://blog.opalang.org/2012/10/dropbox-as-database.html) article raised a lot of positive comments, in particular on [Hacker News](http://news.ycombinator.com/item?id=4723087) and Twitter. To get an idea of the DaaD concept, I created a [demo application](http://server-monitor.herokuapp.com) using this new database back-end. 
+Yesterday, our [Dropbox-as-a-Database](http://blog.opalang.org/2012/10/dropbox-as-database.html) blog post raised a lot of positive comments, in particular on [Hacker News](http://news.ycombinator.com/item?id=4723087) and Twitter. To get an idea of the DaaD concept, I created a [demo application](http://server-monitor.herokuapp.com) using this new database back-end. 
 
 The demo arousing much interest, we decided not stop here! Today, we are introducing a 4 episodes tutorial to cover all steps of the creation of this application. If you can't wait for the 4 episodes then have a look at the [commits](https://github.com/cedricss/server-monitor/commits/master): as you can see, it's really a one-day app!
 
 <a href="http://server-monitor.herokuapp.com/resources/img/screenshot.png"><img src="http://server-monitor.herokuapp.com/resources/img/screenshot.png"/></a>
 
-At the end of this 4 episodes tutorial, you will be able to:
+The tutorial will walk you through:
 
-- create an application View using the native support of HTML in Opa,
-- add event handlers, without thinking about where is running the code thanks to Opa automatic client/server code dispatcher,
-- configure a http server and a database in a single file,
-- interact with the DOM using some of the features enhancements Opa provided on top of JavaScript,
+- create the application View (with HTML templates),
+- add event handlers (and play with client/server magic),
+- configure the application (within the app),
+- interact with the DOM (JavaScript on steroids),
 - parse user inputs and urls,
-- discover some of the languages aspects like modules,  recursive functions, records, block notations, types and pattern matching,
+- use modules, recursive functions, records, block notations, types and pattern matching,
 - use the Opa path notation to handle data stored in a MongoDB database,
 - switch from a MongoDB database to a Dropbox one.
 
@@ -25,7 +25,7 @@ At the end of this 4 episodes tutorial, you will be able to:
 
 <a href="https://raw.github.com/cedricss/server-monitor/demo/resources/img/initial-view.png"><img src="https://raw.github.com/cedricss/server-monitor/demo/resources/img/initial-view.png"/></a>
 
-Let's start to design the user interface. We create a `View` module with a `page` function inside. It will serve the HTML page:
+Let's start with the UI. We create a `View` module with a `page` function inside. It will serve the HTML page to users:
 
     module View {
 
