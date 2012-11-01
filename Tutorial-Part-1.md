@@ -76,12 +76,20 @@ We setup (outside of the `View` module) a http server configured to serve the pa
 
 ## Compile ##
 
-We compile and see the result at the `http://localhost:8080` url:
+We can add a Makefile:
 
-    opa main.opa --
+    main.js: main.opa
+        opa main.opa
+
+    run: main.js
+    	./main.js
+
+And run the app:
+
+    make run
     Http serving on http://localhost:8080
 
-> `--` means "compile and run". You can add extra runtime options, for example `opa main.opa -- --port 9090`
+> we can also type `opa main.opa --`, `--` meaning "compile and run". You can add extra runtime options, for example `opa main.opa -- --port 9090`
  
 ## Bootstrap theme ##
 
@@ -96,6 +104,9 @@ Or shorter:
     import stdlib.themes.bootstrap.{css, icons, responsive}
 
 We restart the server to appreciate the style improvement.
+
+    Ctrl-C
+    make run
 
 Get the [source code at this step on github](https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa).
 
@@ -182,6 +193,9 @@ In the `View.page` function, we update the "Add and run" html button so the `sub
 [See all the changes we made in this "Add Jobs" section](https://github.com/cedricss/server-monitor/commit/cd66d95c5f72d12b32e9f74fe2c7d1b57526aa07).
 
 Run your application, then open it in your browser and click "Add an run" button providing both valid and invalid input values: jobs are added in the list of jobs or error messages are printed in the logs.
+
+    Ctrl-C
+    make run
 
 ## To be continued ##
 
