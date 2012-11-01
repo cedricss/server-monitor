@@ -5,7 +5,7 @@ Overview
 --------
 
 Monitor the health of your servers and receive alerts when something goes wrong.
-This web application is built with the Opa technology and runs on top of a Dropbox-based database.
+This web application is built with the Opa technology and runs on top of a [Dropbox-based database](http://blog.opalang.org/2012/10/dropbox-as-database.html).
 
 Demo
 ----
@@ -49,4 +49,5 @@ Run
 
 Tutorial
 --------
-A full tutorial is coming soon! For the moment, have a look at the <a href="https://github.com/cedricss/server-monitor/commits/master">commits list</a>: this is how the application was built, step by step. 
+- Blog post: [the tutorial](http://blog.opalang.org/2012/11/dropbox-as-database-tutorial.html)
+- _tl;dr_: have a look at the <a href="https://github.com/cedricss/server-monitor/commits/master">commits list</a>: this is how the application was built, step by step. 
