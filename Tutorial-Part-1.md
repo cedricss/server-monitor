@@ -89,7 +89,7 @@ And run the app:
     make run
     Http serving on http://localhost:8080
 
-> we can also type `opa main.opa --`, `--` meaning "compile and run". You can add extra runtime options, for example `opa main.opa -- --port 9090`
+> We can also type `opa main.opa --`, `--` meaning "compile and run". You can add extra runtime options, for example `opa main.opa -- --port 9090`
  
 ## Bootstrap theme ##
 
