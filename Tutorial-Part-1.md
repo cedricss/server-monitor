@@ -85,7 +85,7 @@ We compile and see the result at the `http://localhost:8080` url:
  
 ## Bootstrap theme ##
 
-We want to use the default <a href="http://twitter.github.com/bootstrap/">bootstrap css theme</a> provided by Twitter. We just have to import the theme at the beginning of our file. We also import the glyphicons and the responsive css so the application can work well on different display sizes:
+We want to use the famous default <a href="http://twitter.github.com/bootstrap/">Bootstrap css theme</a> Twitter gave us. We just have to import the theme at the beginning of our file. We also import the glyphicons and the responsive css so the application can work well on different display sizes:
 
     import stdlib.themes.bootstrap.css
     import stdlib.themes.bootstrap.icons
@@ -95,7 +95,7 @@ Or shorter:
 
     import stdlib.themes.bootstrap.{css, icons, responsive}
 
-We compile and restart the server to appreciate the easy style improvement!
+We restart the server to appreciate the style improvement.
 
 Get the [source code at this step on github](https://github.com/cedricss/server-monitor/blob/34985981fa40de13c5a9f371f32be2a172e70621/main.opa).
 
@@ -181,9 +181,10 @@ In the `View.page` function, we update the "Add and run" html button so the `sub
 
 [See all the changes we made in this "Add Jobs" section](https://github.com/cedricss/server-monitor/commit/cd66d95c5f72d12b32e9f74fe2c7d1b57526aa07).
 
-Compile and try the "Add an run" button providing both valid and invalid input values: jobs are added in the list of jobs or error messages are printed in the logs.
+Run your application, then open it in your browser and click "Add an run" button providing both valid and invalid input values: jobs are added in the list of jobs or error messages are printed in the logs.
 
 ## To be continued ##
 
-In the next article we'll discuss about how to monitor the servers behind the job urls and how to control those jobs (play, pause, edit and remove).
+This is probably enough for today!
+In a next article, we'll discuss about how to monitor the servers behind the job urls and how to control those jobs (play, pause, edit and remove).
 
